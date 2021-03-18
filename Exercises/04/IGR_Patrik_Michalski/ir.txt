@@ -1,0 +1,12 @@
+For sample ('overcast', 'high', 'high', 'false') IZ is given by 3 - 2 = 1 with most frequent classification no.
+For sample ('rainy', 'low', 'normal', 'false') IZ is given by 1 - 1 = 0 with most frequent classification no.
+For sample ('sunny', 'medium', 'low', 'true') IZ is given by 2 - 1 = 1 with most frequent classification no.
+For sample ('overcast', 'low', 'low', 'true') IZ is given by 3 - 2 = 1 with most frequent classification no.
+For sample ('sunny', 'high', 'high', 'true') IZ is given by 1 - 1 = 0 with most frequent classification yes.
+For sample ('rainy', 'high', 'normal', 'false') IZ is given by 3 - 2 = 1 with most frequent classification yes.
+For sample ('rainy', 'medium', 'high', 'true') IZ is given by 2 - 1 = 1 with most frequent classification no.
+For sample ('overcast', 'medium', 'normal', 'false') IZ is given by 1 - 1 = 0 with most frequent classification yes.
+For sample ('sunny', 'low', 'high', 'false') IZ is given by 3 - 2 = 1 with most frequent classification yes.
+For sample ('sunny', 'medium', 'high', 'false') IZ is given by 1 - 1 = 0 with most frequent classification no.
+For sample ('rainy', 'medium', 'high', 'false') IZ is given by 1 - 1 = 0 with most frequent classification yes.
+Resulting in an IR value of 0.2857142857142857.

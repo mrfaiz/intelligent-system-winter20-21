@@ -1,0 +1,501 @@
+
+Intelligent system
+-----------------------------------------------------------------------------------
+Moor's law - complexity of IC with component cost is roughly double every two years.
+Glass's law - 25% increase the functionality increases complexity by 100%.
+
+Traditional vs Intelligent Systems
+- Traditional 
+	- Follow top-down design methods
+	- Everything is pre-planned and tested from the begining
+Intelligent
+	- at design-time engineers do the basic system design and specify also the scope of system's freedom
+	- Consist of autonomous sub-systems (processes sensors and actuators), sub-systems interact with each other and the environment.
+	- No global control
+	
+- Environment is accessed through sensors and manipulated by the actuators.
+
+Requirments of IS: 
+	- Access to sensor, Access to internal status, utility function, Access to control interfaces
+	
+Organic computing: 
+	- Moving desing-time to decision to runtime
+	- autonomous decisions
+	- Same fields of OC
+		- Autonomic computing, proactive computing, complex Adaptive systems, Self-aware systems
+
+		
+Three major compoents of Generic Observer/Controller Pattern
+	- System under Observation and Control(SuOC): productive part, not restricted to individual devices
+	- Observer: Gathers information, Analysis, predicts, detects patterns
+	- controller: decice, Learns, Modify
+	
+Mulit-layer observer/control:
+	- layer0: Productive system
+	- layer1: Parameter selection and onlin learning: monitor, pre-processing, prediction, situation analysis, performance analysis, aggregator, history
+	- laryer2: Offline learning, 
+	- layer 3: Collaboration
+	
+Autonomic Computing
+	- MAPE (Monitor, analyse, Plan, Execute)
+
+Holonic Systems:
+	- Structuring systems of systems
+	- challenges: Scalability, Diversity, Interference and conflicts
+	- Reference point: A goal is an evaluable property that should be achived or a verifiable statement that can be deemed true (or not), of a state or behaviour or a system under conisderation
+
+Holonics: Manage limited rationality
+	- usefull properties: Control semi-isolation, Abstraction, aggregation, progressive dynamics
+	- limitations: new field, s/w engineering support, limited experiences
+	
+---------------------------------------------------------------------------------------------
+Preporcessing
+ 	- "unclean" - Incomplete, Noisy, Inconsistent
+ 	- tasks: Cleanup, Integration, Transformation, Reduction
+
+	- Find missing values
+		- (linear interpolation): y2 = y1 + (y3 - y1)/(x3 - x1) * (x2 - x1)
+		- moving avarage
+	
+	- Binning-Data : is divided into equal bins and replace by : average, median or border values
+	
+	- Scaling - Normalisation or standarisation
+		- Normalisation: transformed values in unit interval [0,1]: xNew = (x-a)/b-a , where a = min, b = max.
+			- Problem : new data may contain value outside of the range interval [a,b]
+			- Solution: standarisation
+			
+		- Standarisation (Mahalanobis Scaling): xNew = (x - meu)/ sigma. where 
+			- meu = mean = 1/n * summation of 1 to k of yk,
+			- sigma = standard deviation = sqrt(1/(n-1) * sumation of k = 1 to n of square(yk - meu) 
+			- after transformation the data to give a mean is 0, em standard deviation is 1
+			
+			
+	- Outliers: values can be inaccurate, distorted, or falsified
+		- Treatments : marking, Removal, correction
+		- Detection: need to calcuate the mean and standard deviation, then check whether attribute deviates from the mean by more than two or three times the standard deviation
+		- Tecniques for correction: Replace by max or min, replace by global mean, interpolation for time series, Model based
+	
+	- Insonsistencies:
+		- Procedure similar to outlier detection
+	
+	- Data encoding: Non-numeric data therefore be suitably coded
+		- Ordinal attributs: Rank-based
+		- Nominal attributs: orthogonal coding ( 10000, 01000, 00100..)
+		
+		- Represetaion  of time series data
+		-	- Single value decomposition, trees, Natural Language, Wavelets, DFT etc.
+			- Statistical features : the simplest form of representation
+			
+		- Run-length based singature: 
+			- meaning of (5, 2);(7, 3) : 5 occurs 2 times , 7 occures 3
+		- Histogram:
+			- for example Run-lenght based signure. we can draw a graph for occurences of nubmers
+		- Simple representation
+			- Picewise Aggregate Approximation (PAA): Time series is divided into sections of equal length and each section is replaced by a constant value derived from the average of the values 				within each section.
+			
+	- Singals and systems
+		- Properties: Causality, stability, BIBO
+		- Linear, Time-invariance, Linear time-invariant
+		- Digital filter types: ideal low pass, ideal high pass, ideal pass stop, ideal band-stop
+ 
+	
+----------------------------------------------------------------------------------------------------------
+
+Time-Series Features
+-------------------
+Goal: 
+- Abstract representation of input patterns by features
+- Transform input to featurs spaces
+
+Requirements:
+- Actual task can still be performed
+- Invariance against Translation, rotation, scaling 
+
+Time-independent features:
+- Example: Use absolute value of a vector as feature
+- Time-dependent features
+	- Sliding window: Fixed-lenght window
+		- hide remaining info, reduction of dimentionality
+	- Two degree of freedom: window size w, time offset tao
+
+Time-dependent features
+	Statistical time-dependent features
+		- use first differences, second differences, standard deviation
+		- Advantages
+			- all time series are mapped to vectors of the same length
+			- Insensitive to noise and outlier
+		- Disadvantages:
+			- for sliding window : window size very important and sensitive
+			- for growing window : longer the window becomes, posibility increases to no longer detect phenomena
+
+	Dynamic features:
+	- Description by peaks
+		- params: posiiton, height, width of the peaks
+	- PAA (Piecewise Aggregate Approximation)
+		- Time series is divided into sections of equal length and these are replaced by a constant value
+	- PLA (Piecewise linear approximation)
+		- divided into seciotion, each section is represented by a straight line, Vector: length and slope
+	- Polynomial approximaiton:
+		- Represent time-series by a polynomial of given degree
+		- Advantage : Very compact description of time-series
+		- Disadvantage: Determine appropriate degree is difficult.
+
+Feature Selection
+- Taks: select an optimal subset from the set of available features , depending on accuracy, low costs, better understandable	
+- Benefit: time saving, better data quality, generalisation
+- P(C|G) = probability for class C assuming G occured
+- P(C, G) = compund probability = P(C|G) * P(G) = P(G|C) * P(C)
+- Feature selection criteria:
+	- Filters, wrappers and hybrid solutions
+		- Filter: Filters evalute the quality of features based on an analysis of the data in the feature space
+ 		- Wrappers: evaluate the quality of a model instance found with selected features and suitable ML algorithm
+	- Monitored or unmonitored approaches(supervised/unsupervised)
+	- Generation of subsets
+		- Search directions (Sequential Forward Generation SFG, S Backward G, Bidirectional G, Random G), Random Generation RG.
+
+	- Stopping criteria : time, number of features, iterations, algorithm specific, appllicaiton-dependent
+	
+	- Search strategies: 
+		- Exhaustive: All possible feature combinaitons, O(n^N), Width search (BFS), global optimum is alwasy there
+		- Heuristic: Based on expert knowledge , O(N), Depth search, Global optima not guaranteed
+		- Nondeterministic: Selection of the next set of features not according to fixed rule, but randomly, Global optimum cannot be guaranteed either 
+	
+	- Evaluation measures: selection criteria are required to evaluate the quality of a generated subset of characteristics.
+		- Classes of measures
+			- Accuracy
+			- Classic separability
+				- Classic measure
+					- Information : use shanno's entropy
+					- Distance
+					- Dependence: correlation of features with correlation coefficient 
+				- Consistency
+		- Shannon's entryopy E
+			E(D) = - summation of (pi log2 pi) from i = 1 to d
+			- D = data volumn,
+			- d = Number of classes
+			- pi: probability of class i
+		- IR is calculable in O(N): N = number of samples
+- Feature selection algorithms:
+	- FOCUS: 
+		- Type: Filter, Supervised, Search Direction: SFG, Search stretegy: Exhaustive, Measure: IR, Terminate: asll subset examined or subset found with IR = 0
+	- Automatic branch and bound (ABB):
+		- Type: Filter, Supervised, Search Direction: SFG, Search stretegy: Exhaustive, Measure: IR, Terminate: Algorithm specific
+PCA
+---
+- Goal: primary: order dimension, secondary: diemension reduction
+
+-------------------------------------------------------------------------------------------------------------------------
+Similarities
+------------
+- Comparison of samples , i.e. distance or similarity measurement
+- Distance meausrement can be perform:
+	- Directly on raw data
+	- on a corresponding representation or 
+	- about a model created from the data
+- Mahalanobis norm: Inverse of covariance matrix
+- Cosine distance , Normalised standard scalar product of two vectors
+- Hamming distance: Measure for the difference of character strings
+- Longest Common Subsequences (LCSS):
+	- Goal: Find the longest common partial sequence of several sequences X = <B,G,M,M,T,E,Y,R,F,F,B>, Y = <G,D,F,F,T,E,R,R,A,S,U,B,B,W>, RESULT = <G,T,E,R,B>
+	- 3 Steps: Atomic mathcing, Formation of longer partial sequences, Finding longest match  
+- Dynamic time wraping(DTW): search so-called warping path
+	- Restiction apply: 
+		- Boundary condition: Starts with both first elements and ends with both last element on the two time-series. each
+		- Continuity: Each wrapping path is continous,
+		- Monotony: maintain the chronological order
+	- Problem: DTW path may degenerate, DTW path is restricted by boundary condition
+- Edit Distance:
+	- Edit distance, also called Levenshtein distance. 
+	- ED specifies the minimum number of insert, delete and replace operations necessary to convert one string to another
+- Shape Space Distance:
+	- Comparison of the trend of each time-series
+--------------------------------------------------------------------------------------------------------------------------------
+
+Segmentation
+------------
+- Subdivision of longer sequence into shorter sections
+- Objectives:
+	- Lowest possible approximation or reconstruction error
+	- Segmentation at conspicuous points
+	- Segmentation  by changes
+	- Efficiency
+	
+- Offline: Global view possible
+	- Top-Down approach: 
+		- Requirement: Time series, error function and the threshold value
+		- Calculate the approximation error for the currently considered segment
+		- calculate the sum of the approximation errors
+		- split the segment at the point where greatest reduction in error 
+		- subdivide if error of one of the two segments is greater than the given threshold
+		
+		- Advantage: Very simple,
+			- Any error function and abort criterion possible.
+			- The abort criterion can be replaced or extended by specifing the number of desired segments
+		- Dis: only offline, no global optimal solution, Worst-case complexity: quadratic concerning the number of data values
+		
+	- Bottom-up approach:
+	 	- Starting from a segmentation as fine as possible, segments are grouped step by step until it is no longer possible to group them without violating the targets.
+	 	- Advantages disadvantage like as top-down
+		
+- Online: local view only
+	- Equidistant 
+		- spit into equal length sections
+		- possible if semantics of the time series known
+	- Sliding window
+		- fixed length , shift by a fixed number of m of data values
+		- Analogous to Equidistant segmentation
+	- Growing window:
+		- The currently considered section is gradually enlarged, Montoring of parameters as soon as certain conditions are fulfilled
+	- SWAB - Sliding Window and Bottom-Up
+		- To approximate optimal segmentation
+
+Clustering
+---------------------------------------------------------------------------------------------------------------------------
+- Subdivision of a set of given pattern into clusters
+- task of unsupervised learning
+- not specificaiton as to which patterns belong in which clusters.
+- most important tool in clustering is the distance 
+- Clustering using a similarity measure on time series
+- Interesting aspects of clustering:
+	- Outliers form a cluster ?
+	- pre-processing can change the clustering
+	- Interpretation of th clustering results.
+	- The number of clusters is sometimes difficult to determine or decide
+	- time-varying data can change the cluster time to time
+- Terms(cluster methods)
+	- Incomplete Cluster analysis methods(CAM), Derterministic CAM, Overlapping CAM, Probabilistic CAM, Possibilistic CAM, Hierarchical CAM, Partitioning CAM, CAM with object function
+	- hierarchical cluster
+		- Bottom-up
+		- assign each samples to its own cluster at the begining
+		- in each step of the process, two clusters are searched for a specific optimality criterion, which is then merged to form a cluster.
+		- continure untill fullfil the clusters number requirement
+		- find poor local optim
+		
+		- Delta_min "nearest neighbour", Delta_max "farthest neighbour", delta_avg "averest neighbour"
+	
+		- Single Linkage
+			- advantage: outlier are recongnised
+			- Disadvantage: chaining effect
+		- Complete linkage:
+			- Process is the same as for single-linkage
+			- Adv: avoidence of chaining effect, ensure homogeneous clusters
+			- Dis: outleirs are integrated , no longer detected
+		- Average linkage:
+			- single + complete
+- c-Means:
+	- given data, ask for how many cluster to user, choose c initial cluster: forms cluster by dertermining the nearest cluster centres, calculate the mean value of the samples, repeat until stoping criteron is reached.
+	
+	- also k-Means or simply clustering
+	- c = number of cluster
+	- Advantage: easy, all semples are automatically assigned to clusters, process terminates
+	- Disadvantages: 
+		- Convergence in local minimum possible
+		- Number of clusters to be determined manually
+		- sensitive to outliers and choice of intial cluster centers
+	- Properties
+	 - Clusters centers are only move if the value of the target function decreases as a result
+	 - Finite number of possibilities to assign to clusters, process terminates
+	 - process is "greedy"
+   - why c-Medois not c-means
+   	- problem of c-means (using mean) can be significantly affectd by outliers
+   	- idea: use medians instead of averages
+   	- Example:
+		– Average value of 1, 3, 5, 7, 9 is 5
+		– Average value of 1, 3, 5, 7, 1009 is 205
+		– Median of 1, 3, 5, 7, 1009 is 5
+- Nearest neighbour clustering
+ 	- hierarchical, agglomerative clustering
+ 	- The process starts with randomly selected sample assigned to newly created cluster
+ - Density-Based Spatial Clustering of Applications with Noise (DBSCAN)
+ - OPTICS: Ordering Points To Identify the Clustering Structure
+ 	- Based on DBSCAN
+ 	- Fixes DBSCAN: can detect clusters of different density
+
+- Cluster evaluation criteria
+	- P is set of parameters. Among the generated cluster structures, search for the best configuration of P about the selected evaluation criterion f
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Classification
+--------------
+- Find a method to predict the class of observations
+- Supervised learning
+
+1-R Classifier
+	- suitable for nominal features ( like gender, nationality..)
+	- Find set of rules applied in One Feature only
+	- Algorithm
+		- For all possible values of feature
+			- count the occurrences of every class
+			- Find the most frequent clss
+			- Produce a rule assigning the class to the feature value
+		- Calculate the failure rate of rules
+	- Choose the rule with lower fauilure rate
+k-Nearest neighbour(k-NN)
+	 - Very simple classificaiton technique
+	 - Use all training samples as model (No selection , no training)
+	 - k determines number of nearest neighbours
+	 - Typical values for k: 1, 3 or 5 (for a two-class problem)
+	 - Find an appropriate k is challenging
+	 - Evalution of k-NN
+	 	- Training is not required
+	 	- Fast, but storing of all the training samples is necessary
+	 	- Expensive classification process 
+	 	- Good for reference values of the classification performance
+ Decision Tree
+ - Best feature?
+ 	- The feature producing a minimal tree
+ 	- Information Gain(IG): choose the feature with highest IG
+ 	- Select Feature with highest Gain Ration (GR)
+ 		- GR(X) = IG(X)/ intrnsic info(X) .. denoted by pie
+ - Overfitting:
+ 	- Train error less, test error large accross number of featurs values
+ 
+ Random Forest
+	 - Collection of unpruned Decision Trees
+	 - Imporve predictin accuracy
+	 - kernel trick
+	 	- maps samples into an inner product space
+	 	- usally of higher dimension
+	 - Bagging
+	 	- Bootstrap aggregation
+	 	- to void overfitting
+	 	- to improve stability and accuracy
+	 - Boosting:( alternative name ARCing)
+	 - Gini index for Purity measure
+	 - Lmitaiton
+	 	- which kernel parameters
+	 	- during learning computational load
+	 	- needs to store samples instead of indices
+	 	
+Naive Bayes Classifier
+	- In contrast to 1-R , it takes all features into account
+	- Probabilistic clsssifier
+	- conditional independence if, P(A, B|C) = P(A|C) P(B|)
+	- theorem,
+		P(A|B) = P(B|A)*P(A)/P(B), where P(A) = A-priori of event A, P(B|A) likelihood, P(A|B): A-posteriori probability of event A, P(B): Evidence
+Support Vector Machine(SVM)
+ 	- Decision boundary
+ 	- how SVM solve complex problem ?
+ 		- Lagrange method
+ 	- how svm solve non-linear problem?
+ 		- Kernel trick
+ 		- Transformatin of the data by means of a non-linear function
+ 	- how multi-class problem solve?
+ 		- Reduction of two-tier problems
+ 	- Linear severability, Kernel trick
+ 	
+ 	- Sturcture:
+ 		- Normal vector w, Hyper-planes run perpendicular to this stright line
+ 		
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Generative Classifier
+--------------------
+- Problem of Classificaiton: In most cases, observations are not linearly separable
+- That's why we need Generative modeling
+- Types of classifiers:
+	- Discriminative classifier: Use discirmination function, which maps an observation to class
+	- Comprehensible Classifier: Are constructed and interpreted by human experts.
+	
+	
+	- Generative Classifier:
+	  - Model those processes that caused the observations (i.e. that generated the observations)
+- Generative modeling
+	 - use Generative Classifiers (probabilistic ones)
+	 - Use Gaussian distribution
+	 - Advavantage: Easy to combine with cost or utility functions, Easy to define a rejection criterion
+	 
+- Gaussian distribution
+	- use for the distribution of continous variables
+	- Properties
+		- multi-variate normal distribution used as a model of probability densities
+	- limitations:
+		- is uni-model, it comes with one isolated maximum
+		- It cannot be used to approximate multi-modal distributions
+		- not flexible enough in terms of the set of distributions that can be represented
+- Gaussian Mixer models(GMM)
+	- Linear combination of several basic distributions
+	- Example of mixture model (three components contour lines)
+		- a. cotour lines of three components with constant density , b. Contour lines of the constant density of the mixture model, 3. 3D plot of the mixture model 
+	- Maximum-Liklihood (ML) determines the parameters of the rule premises p(c|k)
+	- Expectation Maximisation (EM) used to tackle ML problem
+	- Responsibilities defined by gamma
+	- Singularities are observed quite often in real-world data that's why ML is problematic
+- Training GMMs 
+	- Identification of clusters of data points in multi-dimensional input spaces
+	- E (Expectation) determining r, M (maximisation) determine meu_k
+--------------------------------------------------------------------------------------------------------------------------
+
+Quantifications
+---------------
+-	- k:m ( m elements, k control mechanisms CM)
+	- Strongly self-organized : k = m 
+	- Self-organised: k>1
+	- Weakly self-organised, k = 1
+	- Self-Configuration: relates to a parameterrisation of a system
+	- self- ogrananisation: relates to change of the structure of a system
+	- Self-management: comprises self-configuration, self-organisation
+
+- Self-organisation as a process
+	- when a "disturbance" happens with already started system and the system recorvers to its previous degree of organisation. 
+	
+- State spaces: 
+	- Target Space: all states with a utility u > = u_target belong to the target space Z_omega (might be just one global optimal state)
+	- Acceptance Space: u > = U_acct, Z_acceptable set
+	- Survival Space: Greater then dead space
+	- Dead space: 
+- Control Mechanism(CM)
+	- Recovery is done by built-in CM in organic systems
+	- CS_int configuration space
+	- CM initiates control actions
+	- C_int, C_obj control signal
+- Robustness vs Flexibility
+- Robustness: 
+	- storngly robust: delta elementOf D map the target space
+	- robust: map the target space into the acceptance space
+	- Weakly robust: delta elementOF D map to th suruvaibal sapce and the internal control mechanism Cm is able to lead S back at least an acceptable state.
+	
+----------------------------------------------------------------------------------------------------------------------------------
+Reinforcement Learning
+------------------------
+What is Reinforcement Learning?
+- learning from interaciton 
+- goal-oriented learning
+- Learning by/from /during interaction
+
+Q-Learning
+	- Q = quality
+	- Example of enforcement learning
+	- Maintain list of Q-values for all state-action pairs
+	- off-policy temporal-difference learning algorithm
+	- one of the early breakthroushs of RL
+XCS
+- rule based (online) learning system
+- can be used for pure classification as well as for regression problems
+- Extended Classifier System
+- Today most studided classifier system
+- Extension of LCS (Learning classifier system)
+	- LCS conatins
+		- Set of classifiers
+		- Input interface
+		- output interface
+		- message list
+		- Evolutionary process
+XCS components (three):
+	- Performance (blue): matching payoof prediction, action selection
+	- Reinforcement component(Green): Attribute update, deferred credit assignment
+	- Discovery(yellow): covering of non-explored niches
+	
+-----------------------------------------------------------------------------------------------------------------
+MitualInfluence (MI)
+ - mutual influence are effects of configurations of other subsystems in a shared environment on the utility achievement of an indivitual subsystem in a particular situation.
+ 
+ - MI detecion
+ 	- Observation, Distribution, Estimation, Evaluation, Adaption
+
+
+Coorelation measures:
+	- Pearson Correlation: assumes values between -1 and 1,  0 = no corel, -1= perfect negetive , 1 = perfect positive
+	- Kendall Rannk: also -1 to 1,  -1 = perfect monotone declining, 1 = perfect monotonic increaseing
+	-
+	
